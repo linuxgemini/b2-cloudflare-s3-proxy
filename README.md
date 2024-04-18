@@ -14,6 +14,16 @@ Check out `wrangler.template.toml` for configuration details. To summarize:
 
  - If you disable `ALLOW_UNAUTHENTICATED_PULLS`, _every_ downstream request has to be signed with the same credentials that you configure in the worker.
 
+## Regarding secrets
+
+See https://developers.cloudflare.com/workers/configuration/secrets/ for an intro about Secret variables.
+
+To add them, you can do the following commands:
+
+ - `echo "<your b2 application key id>" | npx wrangler secret put AWS_ACCESS_KEY_ID`
+
+ - `echo "<your b2 application key>" | npx wrangler secret put AWS_SECRET_ACCESS_KEY`
+
 ## License
 
 ```
