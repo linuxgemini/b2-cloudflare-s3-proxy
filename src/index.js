@@ -91,15 +91,15 @@ export default {
         url.hostname = (url.hostname.startsWith(`${AWS_S3_BUCKET}.`) ? `${AWS_S3_BUCKET}.${AWS_S3_ENDPOINT}` : AWS_S3_ENDPOINT);
         url.port = "443";
 
-        const alwaysValidate = (!env["ALLOW_UNAUTHENTICATED_PULLS"] && env["ALLOW_UNAUTHENTICATED_PULLS"] !== "true");
+        const alwaysValidate = (env["ALLOW_UNAUTHENTICATED_PULLS"] !== "true");
         const requestHasAuthorizationHeader = request.headers.has("Authorization");
         const methodAlwaysRequiresAuthorization = !["GET", "HEAD", "OPTIONS"].includes(request.method);
 
         let signUpstreamRequestEvenOnUnauthenticatedPulls = false;
         let allowRootPathCallsEvenOnUnauthenticatedPulls = false;
         if (!alwaysValidate) {
-            signUpstreamRequestEvenOnUnauthenticatedPulls = (env["ALLOW_UNAUTHENTICATED_SIGNED_PULLS"] && env["ALLOW_UNAUTHENTICATED_SIGNED_PULLS"] === "true");
-            allowRootPathCallsEvenOnUnauthenticatedPulls = (env["ALLOW_UNAUTHENTICATED_LISTING_CALLS"] && env["ALLOW_UNAUTHENTICATED_LISTING_CALLS"] === "true");
+            signUpstreamRequestEvenOnUnauthenticatedPulls = (env["ALLOW_UNAUTHENTICATED_SIGNED_PULLS"] === "true");
+            allowRootPathCallsEvenOnUnauthenticatedPulls = (env["ALLOW_UNAUTHENTICATED_LISTING_CALLS"] === "true");
         }
 
         if (!allowRootPathCallsEvenOnUnauthenticatedPulls && url.pathname.match(/^\/+$/)) return new Response(generateAccessDeniedMessage(), DEFAULT_ERROR_RESPONSE_CONFIG());
