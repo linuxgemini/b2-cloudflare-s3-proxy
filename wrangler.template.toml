@@ -1,0 +1,48 @@
+#:schema https://www.unpkg.com/wrangler/config-schema.json
+name = "b2-cloudflare-s3-proxy"
+main = "src/index.js"
+compatibility_date = "2024-04-15"
+
+# See below comment.
+workers_dev = false
+
+# This project is designed for Zonal requests (ie. clients using the official AWS
+# SDK, for instance: HedgeDoc); so you need to use the Custom Domains functionality
+# for this.
+#
+# See https://developers.cloudflare.com/workers/configuration/routing/custom-domains/
+# for more information.
+routes = [
+    { pattern = "${custom_domain_base}", custom_domain = true },
+    { pattern = "${s3_bucket_name}.${custom_domain_base}", custom_domain = true },
+]
+
+upload_source_maps = true
+
+[vars]
+# Allows pulls for requests without `Authorization` header;
+# without signing the upstream request.
+ALLOW_UNAUTHENTICATED_PULLS = "true"
+
+# Allows pulls for requests without `Authorization` header
+# by signing the upstream request itself. If ALLOW_UNAUTHENTICATED_PULLS
+# is set to "false", this option is ignored.
+ALLOW_UNAUTHENTICATED_SIGNED_PULLS = "false"
+
+# Allows root path (`/`) calls without `Authorization` header;
+# without signing the upstream request. If ALLOW_UNAUTHENTICATED_SIGNED_PULLS
+# is set, the upstream request will be signed. If ALLOW_UNAUTHENTICATED_PULLS
+# is set to "false", this option is ignored.
+ALLOW_UNAUTHENTICATED_LISTING_CALLS = "false"
+
+# Region endpoint, for example: "s3.us-west-001.backblazeb2.com"
+AWS_S3_ENDPOINT = "s3.${s3_region}.backblazeb2.com"
+
+# Bucket name, you should also set this on the second object in `routes`
+# config above.
+AWS_S3_BUCKET = "${s3_bucket_name}"
+
+# your api keys, you should add these as secret variables via
+# wrangler or through cloudflare dashboard
+#AWS_ACCESS_KEY_ID = "this_is_a_secret_variable"
+#AWS_SECRET_ACCESS_KEY = "this_is_also_a_secret_variable"

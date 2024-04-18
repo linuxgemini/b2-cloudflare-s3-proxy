@@ -1,0 +1,25 @@
+{
+    "name": "b2-cloudflare-s3-proxy",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "deploy": "wrangler deploy",
+        "start": "wrangler dev"
+    },
+    "dependencies": {
+        "aws4fetch": "^1.0.18",
+        "uuid": "^9.0.1"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "^4.20240405.0",
+        "eslint": "^8.57.0",
+        "prettier": "^3.2.5",
+        "wrangler": "^3.50.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/linuxgemini/b2-cloudflare-s3-proxy.git"
+    },
+    "author": "İlteriş Yağıztegin Eroğlu <ilteris@asenkron.com.tr>",
+    "license": "MIT"
+}
