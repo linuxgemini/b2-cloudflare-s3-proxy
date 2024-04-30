@@ -102,7 +102,7 @@ export default {
             allowRootPathCallsEvenOnUnauthenticatedPulls = (env["ALLOW_UNAUTHENTICATED_LISTING_CALLS"] === "true");
         }
 
-        if (!allowRootPathCallsEvenOnUnauthenticatedPulls && url.pathname.match(/^\/+$/)) {
+        if (!allowRootPathCallsEvenOnUnauthenticatedPulls && url.pathname.match(/\/+$/)) {
             return new Response(generateAccessDeniedMessage(), DEFAULT_ERROR_RESPONSE_CONFIG());
         }
 
