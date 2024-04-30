@@ -102,7 +102,9 @@ export default {
             allowRootPathCallsEvenOnUnauthenticatedPulls = (env["ALLOW_UNAUTHENTICATED_LISTING_CALLS"] === "true");
         }
 
-        if (!allowRootPathCallsEvenOnUnauthenticatedPulls && url.pathname.match(/^\/+$/)) return new Response(generateAccessDeniedMessage(), DEFAULT_ERROR_RESPONSE_CONFIG());
+        if (!allowRootPathCallsEvenOnUnauthenticatedPulls && url.pathname.match(/^\/+$/)) {
+            return new Response(generateAccessDeniedMessage(), DEFAULT_ERROR_RESPONSE_CONFIG());
+        }
 
         // Certain headers appear in the incoming request but are
         // removed from the outgoing request. If they are in the
@@ -179,7 +181,8 @@ export default {
                     break;
                 } else if (response.ok) {
                     attempts -= 1;
-                    console.error(`Range header in request for ${requestToSend.url} but no content-range header in response. Will retry ${attempts} more times`);
+                    console.error(`Range header in request for ${requestToSend.url} but no content-range header in response. \
+Will retry ${attempts} more times`);
                     // Do not abort on the last attempt, as we want to return the response
                     if (attempts > 0) {
                         controller.abort();
@@ -191,7 +194,8 @@ export default {
             } while (attempts > 0);
 
             if (attempts <= 0) {
-                console.error(`Tried range request for ${requestToSend.url} ${RANGE_RETRY_ATTEMPTS} times, but no content-range in response.`);
+                console.error(`Tried range request for ${requestToSend.url} ${RANGE_RETRY_ATTEMPTS} times, but no \
+content-range in response.`);
             }
 
             // Return whatever response we have rather than an error response
